@@ -5,6 +5,7 @@ import { useCartStore } from '@/store/cartStore';
 import type { Product } from '@/data/products';
 import StarRating from './StarRating';
 import { Button } from '@/components/ui/button';
+import { DEFAULT_PRODUCT_IMAGE, resolveProductImage } from '@/lib/images';
 
 interface Props {
   product: Product;
@@ -36,9 +37,10 @@ export default function ProductCard({ product, onQuickView }: Props) {
 
       <Link to={`/products/${product.id}`} className="block relative overflow-hidden bg-warm-card">
         <img
-          src={product.image}
+          src={resolveProductImage(product.image)}
           alt={product.name}
           className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
+          onError={(event) => { event.currentTarget.src = DEFAULT_PRODUCT_IMAGE; }}
         />
         {onQuickView && (
           <button

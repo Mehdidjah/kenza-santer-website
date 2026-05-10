@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import heroImg from '@/assets/hero-products.jpg';
 import { Link } from 'react-router-dom';
 import { Baby, Pill, ShowerHead, Stethoscope, SmilePlus, Leaf, Flame, Star, Truck, ShieldCheck, Quote, Package, Users, Phone } from '@/lib/icons';
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import QuickViewPopup from '@/components/QuickViewPopup';
 import { Button } from '@/components/ui/button';
 import { NumberTicker } from '@/components/ui/number-ticker';
 import type { Product } from '@/types/product';
+import { DEFAULT_PRODUCT_IMAGE } from '@/lib/images';
 
 const categoryItems = [
   { key: 'Bébé & Maman', icon: Baby },
@@ -119,7 +119,7 @@ export default function Index() {
 
             <div className="hidden lg:block relative animate-fade-in [animation-delay:200ms]">
               <div className="relative overflow-hidden rounded-lg bg-warm-card">
-                <img src={heroImg} alt="Produits pharmaceutiques premium" className="w-full" width={1024} height={864} />
+                <img src={DEFAULT_PRODUCT_IMAGE} alt="Produits pharmaceutiques premium" className="w-full" width={1024} height={864} />
               </div>
 
               <div className="absolute -bottom-3 -left-3 bg-white rounded-md px-5 py-3.5 flex items-center gap-3 border border-border animate-fade-in [animation-delay:600ms]">

@@ -1,6 +1,7 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { DEFAULT_PRODUCT_IMAGE } from '../common/images';
 
 @Injectable()
 export class StorageService {
@@ -49,11 +50,11 @@ export class StorageService {
   }
 
   async getDisplayUrl(objectKey: string) {
-    if (!objectKey) return '/placeholder.svg';
+    if (!objectKey) return DEFAULT_PRODUCT_IMAGE;
     if (objectKey.startsWith('http://') || objectKey.startsWith('https://') || objectKey.startsWith('/')) {
       return objectKey;
     }
-    if (!this.client || !this.bucket) return '/placeholder.svg';
+    if (!this.client || !this.bucket) return DEFAULT_PRODUCT_IMAGE;
 
     return getSignedUrl(
       this.client,

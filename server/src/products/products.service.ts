@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../storage/storage.service';
 import { SaveProductDto } from './dto';
 import { EventsService } from '../events/events.service';
+import { DEFAULT_PRODUCT_IMAGE } from '../common/images';
 
 const productInclude = {
   category: true,
@@ -112,7 +113,7 @@ export class ProductsService {
     const imageKeys = product.images.map(image => image.objectKey);
     const urls = imageKeys.length
       ? await Promise.all(imageKeys.map(key => this.storage.getDisplayUrl(key)))
-      : ['/placeholder.svg'];
+      : [DEFAULT_PRODUCT_IMAGE];
 
     return {
       id: product.id,

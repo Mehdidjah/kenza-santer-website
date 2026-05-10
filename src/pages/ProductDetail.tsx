@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { DEFAULT_PRODUCT_IMAGE, resolveProductImage } from '@/lib/images';
 
 export default function ProductDetail() {
   const { t } = useTranslation();
@@ -80,12 +81,22 @@ export default function ProductDetail() {
                   {product.badge}
                 </Badge>
               )}
-              <img src={product.images[selectedImage]} alt={product.name} className="w-full aspect-square sm:aspect-[4/3] object-cover" />
+              <img
+                src={resolveProductImage(product.images[selectedImage])}
+                alt={product.name}
+                className="w-full aspect-square sm:aspect-[4/3] object-cover"
+                onError={(event) => { event.currentTarget.src = DEFAULT_PRODUCT_IMAGE; }}
+              />
             </div>
             <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-1">
               {product.images.map((img, i) => (
                 <button key={i} onClick={() => setSelectedImage(i)} className={`rounded-xl overflow-hidden border-2 transition-colors flex-shrink-0 ${i === selectedImage ? 'border-primary' : 'border-transparent'}`}>
-                  <img src={img} alt="" className="w-16 h-16 sm:w-20 sm:h-20 object-cover" />
+                  <img
+                    src={resolveProductImage(img)}
+                    alt=""
+                    className="w-16 h-16 sm:w-20 sm:h-20 object-cover"
+                    onError={(event) => { event.currentTarget.src = DEFAULT_PRODUCT_IMAGE; }}
+                  />
                 </button>
               ))}
             </div>

@@ -6,6 +6,7 @@ import type { Product } from '@/data/products';
 import StarRating from './StarRating';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { DEFAULT_PRODUCT_IMAGE, resolveProductImage } from '@/lib/images';
 
 interface Props {
   product: Product | null;
@@ -28,7 +29,12 @@ export default function QuickViewPopup({ product, onClose }: Props) {
             <X className="w-5 h-5" />
           </Button>
           <div className="grid grid-cols-1 md:grid-cols-2">
-            <img src={product.image} alt={product.name} className="w-full aspect-square object-cover rounded-t-xl md:rounded-l-xl md:rounded-tr-none" />
+            <img
+              src={resolveProductImage(product.image)}
+              alt={product.name}
+              className="w-full aspect-square object-cover rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
+              onError={(event) => { event.currentTarget.src = DEFAULT_PRODUCT_IMAGE; }}
+            />
             <div className="p-5 md:p-6 flex flex-col justify-center">
               <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-1">{product.brand}</p>
               <h3 className="text-lg md:text-xl font-bold mb-2">{product.name}</h3>

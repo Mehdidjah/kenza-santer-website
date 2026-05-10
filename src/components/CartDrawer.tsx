@@ -2,6 +2,7 @@ import { X, Plus, Minus, ShoppingCart } from '@/lib/icons';
 import { useTranslation } from 'react-i18next';
 import { useCartStore } from '@/store/cartStore';
 import { Button } from '@/components/ui/button';
+import { DEFAULT_PRODUCT_IMAGE, resolveProductImage } from '@/lib/images';
 
 export default function CartDrawer() {
   const { t } = useTranslation();
@@ -33,7 +34,12 @@ export default function CartDrawer() {
             <div className="flex flex-col gap-4">
               {items.map(item => (
                 <div key={item.product.id} className="flex gap-3 sm:gap-4 p-3 rounded-xl bg-muted/50">
-                  <img src={item.product.image} alt={item.product.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover flex-shrink-0" />
+                  <img
+                    src={resolveProductImage(item.product.image)}
+                    alt={item.product.name}
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover flex-shrink-0"
+                    onError={(event) => { event.currentTarget.src = DEFAULT_PRODUCT_IMAGE; }}
+                  />
                   <div className="flex-1 min-w-0">
                     <h4 className="text-sm font-semibold line-clamp-1">{item.product.name}</h4>
                     <p className="text-xs text-muted-foreground">{item.product.brand}</p>

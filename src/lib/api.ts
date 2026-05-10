@@ -1,4 +1,5 @@
 import type { Category, Product } from '@/types/product';
+import { resolveProductImage } from '@/lib/images';
 
 export const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/$/, '');
 export const publicEventsUrl = `${API_URL}/events`;
@@ -99,7 +100,9 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 }
 
 export function mapProduct(row: ApiProductRow): Product {
-  const images = row.images?.length ? row.images : ['/placeholder.svg'];
+  const images = row.images?.length
+    ? row.images.map(resolveProductImage)
+    : [resolveProductImage()];
   return {
     id: row.id,
     name: row.name,

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Switch } from '@/components/ui/switch';
 import { X, UploadCloud } from '@/lib/icons';
 import { toast } from '@/hooks/use-toast';
+import { DEFAULT_PRODUCT_IMAGE } from '@/lib/images';
 
 export interface EditingProduct {
   id?: string;
@@ -91,7 +92,8 @@ export default function ProductEditor({ open, onClose, initial, onSaved }: Props
         toast({ title: 'Upload échoué', description: error instanceof Error ? error.message : 'Erreur inconnue', variant: 'destructive' });
       }
     }
-    setP({ ...p, images: [...p.images, ...urls].slice(0, 4), imageKeys: [...p.imageKeys, ...keys].slice(0, 4) });
+    const existingImages = p.imageKeys.length ? p.images : [];
+    setP({ ...p, images: [...existingImages, ...urls].slice(0, 4), imageKeys: [...p.imageKeys, ...keys].slice(0, 4) });
     setUploading(false);
   };
 
@@ -118,6 +120,8 @@ export default function ProductEditor({ open, onClose, initial, onSaved }: Props
       setSaving(false);
     }
   };
+
+  const realImages = p.imageKeys.length ? p.images : [];
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
@@ -150,15 +154,23 @@ export default function ProductEditor({ open, onClose, initial, onSaved }: Props
           </div>
 
           <div className="space-y-2">
-            <Label>Images ({p.images.length}/4)</Label>
+            <Label>Images ({realImages.length}/4)</Label>
             <div className="grid grid-cols-4 gap-3">
-              {p.images.map((url, i) => (
+              {realImages.length === 0 && (
+                <div className="relative aspect-square rounded-md overflow-hidden border border-dashed border-border bg-muted">
+                  <img src={DEFAULT_PRODUCT_IMAGE} alt="" className="w-full h-full object-cover opacity-80" />
+                  <span className="absolute inset-x-1 bottom-1 rounded bg-background/85 px-1 py-0.5 text-center text-[10px] text-muted-foreground">
+                    Image par défaut
+                  </span>
+                </div>
+              )}
+              {realImages.map((url, i) => (
                 <div key={i} className="relative aspect-square rounded-md overflow-hidden border border-border">
                   <img src={url} alt="" className="w-full h-full object-cover" />
                   <button type="button" onClick={() => removeImage(i)} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1"><X className="w-3 h-3" /></button>
                 </div>
               ))}
-              {p.images.length < 4 && (
+              {realImages.length < 4 && (
                 <label className="aspect-square border-2 border-dashed border-border rounded-md flex flex-col items-center justify-center text-muted-foreground cursor-pointer hover:bg-warm-card text-xs">
                   <UploadCloud className="w-6 h-6 mb-1" />
                   {uploading ? 'Envoi…' : 'Ajouter'}

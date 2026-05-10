@@ -1,10 +1,9 @@
 import 'dotenv/config';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { slugify } from '../src/common/slugify';
+import { DEFAULT_PRODUCT_IMAGE } from '../src/common/images';
 
 const prisma = new PrismaClient();
-
-const sharedImage = '/picture/WhatsApp%20Image%202026-05-01%20at%2016.20.54.jpeg';
 
 const categories = [
   'Bébé & Maman',
@@ -269,17 +268,10 @@ async function main() {
       : await prisma.product.create({ data });
 
     await prisma.productImage.deleteMany({ where: { productId: saved.id } });
-    await prisma.productImage.create({
-      data: {
-        productId: saved.id,
-        objectKey: sharedImage,
-        position: 0,
-      },
-    });
   }
 
   console.log(`Seeded ${categories.length} categories and ${products.length} products.`);
-  console.log(`Shared image: ${sharedImage}`);
+  console.log(`Default product image fallback: ${DEFAULT_PRODUCT_IMAGE}`);
 }
 
 main()

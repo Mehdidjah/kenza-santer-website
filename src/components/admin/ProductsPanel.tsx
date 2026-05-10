@@ -7,6 +7,7 @@ import { Pencil, Trash2, Plus, Search } from '@/lib/icons';
 import { toast } from '@/hooks/use-toast';
 import ProductEditor, { type EditingProduct } from './ProductEditor';
 import { api, type ApiProductRow } from '@/lib/api';
+import { DEFAULT_PRODUCT_IMAGE, resolveProductImage } from '@/lib/images';
 
 export default function ProductsPanel() {
   const qc = useQueryClient();
@@ -38,12 +39,15 @@ export default function ProductsPanel() {
     setOpen(true);
   };
   const openEdit = (r: ApiProductRow) => {
+    const imageKeys = r.imageKeys ?? [];
     setEditing({
       id: r.id, name: r.name, brand: r.brand, category: r.category,
       description: r.description, full_description: r.full_description,
       price: Number(r.price), original_price: r.original_price != null ? Number(r.original_price) : null,
       badge: r.badge, in_stock: r.in_stock, rating: Number(r.rating), review_count: r.review_count,
-      images: r.images ?? [], imageKeys: r.imageKeys ?? [], ingredients: r.ingredients ?? [], how_to_use: r.how_to_use ?? [], precautions: r.precautions ?? [],
+      images: imageKeys.length ? r.images ?? [] : [],
+      imageKeys,
+      ingredients: r.ingredients ?? [], how_to_use: r.how_to_use ?? [], precautions: r.precautions ?? [],
     });
     setOpen(true);
   };
@@ -92,7 +96,14 @@ export default function ProductsPanel() {
           <TableBody>
             {paged.map(r => (
               <TableRow key={r.id}>
-                <TableCell><img src={r.images?.[0] ?? '/placeholder.svg'} alt="" className="w-12 h-12 object-cover rounded" /></TableCell>
+                <TableCell>
+                  <img
+                    src={resolveProductImage(r.imageKeys?.length ? r.images?.[0] : DEFAULT_PRODUCT_IMAGE)}
+                    alt=""
+                    className="w-12 h-12 object-cover rounded"
+                    onError={(event) => { event.currentTarget.src = DEFAULT_PRODUCT_IMAGE; }}
+                  />
+                </TableCell>
                 <TableCell className="font-medium max-w-xs truncate">{r.name}</TableCell>
                 <TableCell className="text-sm">{r.category}</TableCell>
                 <TableCell className="text-sm text-muted-foreground">{r.brand}</TableCell>
