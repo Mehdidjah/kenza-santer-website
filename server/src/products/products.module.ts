@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
 import { EventsModule } from '../events/events.module';
+import { StorageModule } from '../storage/storage.module';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 
 @Module({
-  imports: [AuthModule, EventsModule],
+  imports: [AuthModule, EventsModule, StorageModule],
   controllers: [ProductsController],
   providers: [ProductsService],
   exports: [ProductsService],
