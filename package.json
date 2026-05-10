@@ -22,7 +22,8 @@
     "prisma:migrate": "prisma migrate dev --schema server/prisma/schema.prisma",
     "prisma:deploy": "prisma migrate deploy --schema server/prisma/schema.prisma",
     "admin:create": "tsx server/scripts/create-admin.ts",
-    "import:legacy": "tsx server/scripts/import-legacy-export.ts"
+    "import:legacy": "tsx server/scripts/import-legacy-export.ts",
+    "seed:catalog": "tsx server/scripts/seed-catalog.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.947.0",
