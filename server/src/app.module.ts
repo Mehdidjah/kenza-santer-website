@@ -8,6 +8,7 @@ import { ProductsModule } from './products/products.module';
 import { StorageModule } from './storage/storage.module';
 import { jwtExpiresIn, jwtSecret } from './auth/jwt-options';
 import { EventsModule } from './events/events.module';
+import { HealthController } from './health.controller';
 
 @Module({
   imports: [
@@ -23,5 +24,6 @@ import { EventsModule } from './events/events.module';
     ProductsModule,
     OrdersModule,
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}
