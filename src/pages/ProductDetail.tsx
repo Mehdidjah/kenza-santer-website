@@ -42,6 +42,8 @@ export default function ProductDetail() {
   const related = [...sameCategory, ...fallbackProducts]
     .filter((p, index, products) => products.findIndex(item => item.id === p.id) === index)
     .slice(0, 4);
+  const selectedTotal = product.price * qty;
+  const selectedOriginalTotal = product.originalPrice ? product.originalPrice * qty : undefined;
 
   const handleBuyNow = () => {
     const updateQuantity = useCartStore.getState().updateQuantity;
@@ -107,8 +109,8 @@ export default function ProductDetail() {
               <StarRating rating={product.rating} size="md" showCount={product.reviewCount} />
             </div>
             <div className="flex items-baseline gap-3 mb-4">
-              <span className="text-2xl sm:text-3xl font-bold">{product.price.toLocaleString()} DZD</span>
-              {product.originalPrice && <span className="text-base sm:text-lg text-muted-foreground line-through">{product.originalPrice.toLocaleString()} DZD</span>}
+              <span className="text-2xl sm:text-3xl font-bold">{selectedTotal.toLocaleString()} DZD</span>
+              {selectedOriginalTotal && <span className="text-base sm:text-lg text-muted-foreground line-through">{selectedOriginalTotal.toLocaleString()} DZD</span>}
             </div>
             <p className="text-sm sm:text-base text-muted-foreground mb-5 sm:mb-6">{product.description}</p>
 

@@ -20,6 +20,9 @@ export default function QuickViewPopup({ product, onClose }: Props) {
 
   if (!product) return null;
 
+  const selectedTotal = product.price * qty;
+  const selectedOriginalTotal = product.originalPrice ? product.originalPrice * qty : undefined;
+
   return (
     <>
       <div className="fixed inset-0 bg-foreground/50 z-50 animate-fade-in" onClick={onClose} />
@@ -40,8 +43,8 @@ export default function QuickViewPopup({ product, onClose }: Props) {
               <h3 className="text-lg md:text-xl font-bold mb-2">{product.name}</h3>
               <StarRating rating={product.rating} showCount={product.reviewCount} />
               <div className="flex items-center gap-2 mt-3 mb-3">
-                <span className="text-xl md:text-2xl font-bold">{product.price.toLocaleString()} DZD</span>
-                {product.originalPrice && <span className="text-sm text-muted-foreground line-through">{product.originalPrice.toLocaleString()}</span>}
+                <span className="text-xl md:text-2xl font-bold">{selectedTotal.toLocaleString()} DZD</span>
+                {selectedOriginalTotal && <span className="text-sm text-muted-foreground line-through">{selectedOriginalTotal.toLocaleString()} DZD</span>}
               </div>
               <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{product.description}</p>
               <div className="flex items-center gap-3 mb-4">
