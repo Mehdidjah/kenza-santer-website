@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Hacen Maghreb';
+  src: url('/fonts/HacenMaghreb-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hacen Maghreb';
+  src: url('/fonts/HacenMaghreb-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hacen Maghreb';
+  src: url('/fonts/HacenMaghreb-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 60 23% 97%;
+    --foreground: 60 6% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 60 6% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 60 6% 10%;
+
+    --primary: 150 28% 38%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 150 22% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    --tertiary: 180 20% 14%;
+    --tertiary-foreground: 0 0% 100%;
+
+    --warm-card: 40 23% 93%;
+
+    --muted: 40 23% 93%;
+    --muted-foreground: 30 9% 38%;
+
+    --accent: 150 28% 38%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 67% 57%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 18% 89%;
+    --input: 35 18% 89%;
+    --ring: 150 28% 38%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 60 23% 97%;
+    --sidebar-foreground: 60 6% 10%;
+    --sidebar-primary: 150 28% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 23% 93%;
+    --sidebar-accent-foreground: 60 6% 10%;
+    --sidebar-border: 35 18% 89%;
+    --sidebar-ring: 150 28% 38%;
+  }
+
+  .dark {
+    --background: 60 6% 8%;
+    --foreground: 40 23% 93%;
+    --card: 60 6% 12%;
+    --card-foreground: 40 23% 93%;
+    --popover: 60 6% 12%;
+    --popover-foreground: 40 23% 93%;
+    --primary: 150 30% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 150 22% 60%;
+    --secondary-foreground: 60 6% 10%;
+    --tertiary: 180 15% 75%;
+    --tertiary-foreground: 60 6% 10%;
+    --warm-card: 60 6% 14%;
+    --muted: 60 6% 14%;
+    --muted-foreground: 40 12% 65%;
+    --accent: 150 30% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 67% 50%;
+    --destructive-foreground: 40 23% 93%;
+    --border: 60 6% 18%;
+    --input: 60 6% 18%;
+    --ring: 150 30% 50%;
+  }
+  .theme {
+    --animate-marquee: marquee var(--duration) infinite linear;
+    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+    --animate-shine: shine var(--duration) infinite linear;
+    --animate-shiny-text: shiny-text 8s infinite;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-size: 15px;
+    line-height: 1.75;
+    letter-spacing: -1px;
+  }
+
+  h1, h2, h3 {
+    @apply font-serif;
+    letter-spacing: -1px;
+  }
+
+  html[dir="rtl"] body {
+    font-family: 'Hacen Maghreb', 'Cairo', system-ui, sans-serif;
+  }
+  html[dir="rtl"] h1,
+  html[dir="rtl"] h2,
+  html[dir="rtl"] h3,
+  html[dir="rtl"] .font-serif {
+    font-family: 'Hacen Maghreb', 'Amiri', serif;
+  }
+}
+
+@theme inline {
+  @keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap))); }
+  }
+  @keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% - var(--gap))); }
+  }
+  @keyframes shine {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  to { background-position: 0% 0%; }
+  }
+  @keyframes shiny-text {
+  0%, 90%, 100% { background-position: calc(-100% - var(--shiny-width)) 0; }
+  30%, 60% { background-position: calc(100% + var(--shiny-width)) 0; }
+  }
+}
