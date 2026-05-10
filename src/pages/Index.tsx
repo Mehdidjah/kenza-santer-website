@@ -51,6 +51,27 @@ export default function Index() {
     const label = t(key as never);
     return label === key ? name : label;
   };
+  const renderCategoryCard = (cat: (typeof displayedCategories)[number], duplicate = false) => {
+    const isSpecial = 'special' in cat && cat.special;
+    return (
+      <Link
+        key={`${duplicate ? 'duplicate-' : ''}${cat.key}`}
+        to={`/products?category=${encodeURIComponent(cat.key)}`}
+        tabIndex={duplicate ? -1 : undefined}
+        className={`group relative aspect-square w-[132px] sm:w-[146px] lg:w-[140px] xl:w-[148px] shrink-0 bg-white rounded-xl border p-4 flex flex-col items-center justify-center gap-3 transition-all duration-200 hover:bg-[hsl(var(--warm-card))] ${isSpecial ? 'border-secondary/40 hover:border-secondary' : 'border-border hover:border-primary/40'}`}
+      >
+        {isSpecial && (
+          <span className="absolute top-2 right-2 text-[9px] font-medium uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded">
+            {t('categories.offers')}
+          </span>
+        )}
+        <cat.icon className={`w-9 h-9 ${isSpecial ? 'text-secondary' : 'text-primary'}`} strokeWidth={1.5} />
+        <h3 className="text-[11px] uppercase tracking-[0.06em] font-medium text-center text-foreground leading-tight break-words max-w-full">
+          {categoryLabel(cat.key)}
+        </h3>
+      </Link>
+    );
+  };
   const promoProducts = products.filter(p => p.category === 'Promotions').slice(0, 8);
   const testimonials = t('testimonials.items', { returnObjects: true }) as Array<{ name: string; wilaya: string; text: string }>;
   const ratings = [5, 5, 4];
@@ -151,24 +172,15 @@ export default function Index() {
             <h2 className="font-serif text-4xl font-semibold mb-3 text-foreground">{t('categories.title')}</h2>
             <div className="w-10 h-[2px] bg-primary mx-auto" />
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 lg:gap-3 xl:gap-4">
-            {displayedCategories.map(cat => (
-              <Link
-                key={cat.key}
-                to={`/products?category=${encodeURIComponent(cat.key)}`}
-                className={`group relative min-h-[150px] xl:min-h-[186px] bg-white rounded-xl border p-5 xl:p-7 flex flex-col items-center justify-center gap-3 xl:gap-4 transition-all duration-200 hover:bg-[hsl(var(--warm-card))] ${'special' in cat && cat.special ? 'border-secondary/40 hover:border-secondary' : 'border-border hover:border-primary/40'}`}
-              >
-                {'special' in cat && cat.special && (
-                  <span className="absolute top-2 right-2 text-[10px] font-medium uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded">
-                  {t('categories.offers')}
-                  </span>
-                )}
-                <cat.icon className={`w-9 h-9 xl:w-10 xl:h-10 ${'special' in cat && cat.special ? 'text-secondary' : 'text-primary'}`} strokeWidth={1.5} />
-                <h3 className="text-[11px] xl:text-[12px] uppercase tracking-[0.06em] font-medium text-center text-foreground leading-tight">
-                  {categoryLabel(cat.key)}
-                </h3>
-              </Link>
-            ))}
+          <div className="category-carousel overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+            <div className="flex w-max gap-4 will-change-transform animate-category-marquee [--category-carousel-gap:1rem]">
+              <div className="flex shrink-0 gap-4">
+                {displayedCategories.map(cat => renderCategoryCard(cat))}
+              </div>
+              <div className="flex shrink-0 gap-4" aria-hidden="true">
+                {displayedCategories.map(cat => renderCategoryCard(cat, true))}
+              </div>
+            </div>
           </div>
         </div>
       </section>

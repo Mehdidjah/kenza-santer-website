@@ -153,3 +153,25 @@
   30%, 60% { background-position: calc(100% + var(--shiny-width)) 0; }
   }
 }
+
+@layer utilities {
+  @keyframes category-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-50% - (var(--category-carousel-gap) / 2))); }
+  }
+
+  .animate-category-marquee {
+    animation: category-marquee 28s linear infinite;
+  }
+
+  .category-carousel:hover .animate-category-marquee {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-category-marquee {
+      animation: none;
+      transform: translateX(0);
+    }
+  }
+}
