@@ -68,6 +68,23 @@ export type AdminUser = {
   email: string;
 };
 
+export type ApiSystemStatus = {
+  ok: boolean;
+  database: {
+    connected: boolean;
+  };
+  bucket: {
+    configured: boolean;
+    bucket: 'set' | 'missing';
+    endpoint: 'set' | 'missing';
+    region: 'set' | 'missing';
+    accessKeyId: 'set' | 'missing';
+    secretAccessKey: 'set' | 'missing';
+    uploadPresign: boolean;
+    error: string | null;
+  };
+};
+
 type RequestOptions = RequestInit & {
   json?: unknown;
 };
@@ -169,6 +186,7 @@ export const api = {
   adminOrder: (id: string) => request<ApiOrder>(`/admin/orders/${id}`),
   updateOrderStatus: (id: string, status: OrderStatus) => request<ApiOrder>(`/admin/orders/${id}/status`, { method: 'PATCH', json: { status } }),
   deleteOrder: (id: string) => request<{ ok: true }>(`/admin/orders/${id}`, { method: 'DELETE' }),
+  adminSystemStatus: () => request<ApiSystemStatus>('/admin/system/status'),
 };
 
 export type ApiProductRowPayload = Omit<ApiProductRow, 'id' | 'created_at' | 'updated_at' | 'imageKeys'>;

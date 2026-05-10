@@ -8,6 +8,7 @@ import { LogOut } from '@/lib/icons';
 import CategoriesPanel from '@/components/admin/CategoriesPanel';
 import ProductsPanel from '@/components/admin/ProductsPanel';
 import OrdersPanel from '@/components/admin/OrdersPanel';
+import SystemPanel from '@/components/admin/SystemPanel';
 import { useAdminSync } from '@/hooks/useSyncEvents';
 
 export default function AdminDashboard() {
@@ -40,10 +41,12 @@ export default function AdminDashboard() {
             <TabsTrigger value="orders">Commandes</TabsTrigger>
             <TabsTrigger value="products">Produits</TabsTrigger>
             <TabsTrigger value="categories">Catégories</TabsTrigger>
+            <TabsTrigger value="system">Système</TabsTrigger>
           </TabsList>
           <TabsContent value="orders" className="mt-6"><OrdersPanel /></TabsContent>
           <TabsContent value="products" className="mt-6"><ProductsPanel /></TabsContent>
           <TabsContent value="categories" className="mt-6"><CategoriesPanel /></TabsContent>
+          <TabsContent value="system" className="mt-6"><SystemPanel /></TabsContent>
         </Tabs>
       </main>
     </div>

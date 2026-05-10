@@ -28,6 +28,17 @@ export class StorageService {
     return Boolean(this.client && this.bucket);
   }
 
+  getStatus() {
+    return {
+      configured: this.isConfigured(),
+      bucket: this.bucket ? 'set' : 'missing',
+      endpoint: (process.env.S3_ENDPOINT ?? process.env.ENDPOINT) ? 'set' : 'missing',
+      region: (process.env.S3_REGION ?? process.env.REGION) ? 'set' : 'missing',
+      accessKeyId: (process.env.S3_ACCESS_KEY_ID ?? process.env.ACCESS_KEY_ID) ? 'set' : 'missing',
+      secretAccessKey: (process.env.S3_SECRET_ACCESS_KEY ?? process.env.SECRET_ACCESS_KEY) ? 'set' : 'missing',
+    };
+  }
+
   createProductImageKey(fileName: string) {
     const ext = fileName.split('.').pop()?.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'jpg';
     return `products/${crypto.randomUUID()}.${ext}`;
