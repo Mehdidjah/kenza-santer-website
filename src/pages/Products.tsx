@@ -20,6 +20,7 @@ const fallbackCategoryFilters: readonly string[] = [
   'Hygiène',
   'Matériel Médical',
   'Hygiène Bucco-Dentaire',
+  'Dermo-cosmétique',
   'Naturel & Bio',
   'Promotions',
 ];

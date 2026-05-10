@@ -34,6 +34,7 @@ export const fr = {
       'Hygiène': 'Hygiène',
       'Matériel Médical': 'Matériel Médical',
       'Hygiène Bucco-Dentaire': 'Hygiène Bucco-Dentaire',
+      'Dermo-cosmétique': 'Dermo-cosmétique',
       'Naturel & Bio': 'Naturel & Bio',
       'Promotions': 'Promotions',
     },

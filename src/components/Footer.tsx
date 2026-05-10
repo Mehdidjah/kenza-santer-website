@@ -4,7 +4,7 @@ import { Facebook, Instagram } from '@/lib/icons';
 import logo from '@/assets/logo.svg';
 import { useCategories } from '@/hooks/useProducts';
 
-const fallbackCategoryKeys = ['Bébé & Maman', 'Compléments Alimentaires', 'Hygiène', 'Naturel & Bio', 'Matériel Médical', 'Promotions'];
+const fallbackCategoryKeys = ['Bébé & Maman', 'Compléments Alimentaires', 'Hygiène', 'Matériel Médical', 'Hygiène Bucco-Dentaire', 'Dermo-cosmétique'];
 
 export default function Footer() {
   const { t } = useTranslation();

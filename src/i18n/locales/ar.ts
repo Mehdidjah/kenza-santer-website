@@ -36,6 +36,7 @@ export const ar: Translations = {
       'Hygiène': 'النظافة',
       'Matériel Médical': 'المعدات الطبية',
       'Hygiène Bucco-Dentaire': 'العناية بالفم والأسنان',
+      'Dermo-cosmétique': 'ديرمو-كوزمتيك',
       'Naturel & Bio': 'طبيعي وعضوي',
       'Promotions': 'العروض',
     },

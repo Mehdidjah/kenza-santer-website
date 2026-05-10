@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Baby, Pill, ShowerHead, Stethoscope, SmilePlus, Leaf, Flame, Star, Truck, ShieldCheck, Quote, Package, Users, Phone } from '@/lib/icons';
+import { Baby, Pill, ShowerHead, Stethoscope, SmilePlus, Leaf, Flame, Star, Truck, ShieldCheck, Quote, Package, Users, Phone, Hospital } from '@/lib/icons';
 import { useState } from 'react';
 import { useCategories, useProducts } from '@/hooks/useProducts';
 import ProductCard from '@/components/ProductCard';
@@ -16,6 +16,7 @@ const categoryItems = [
   { key: 'Hygiène', icon: ShowerHead },
   { key: 'Matériel Médical', icon: Stethoscope },
   { key: 'Hygiène Bucco-Dentaire', icon: SmilePlus },
+  { key: 'Dermo-cosmétique', icon: Hospital },
   { key: 'Naturel & Bio', icon: Leaf },
   { key: 'Promotions', icon: Flame, special: true },
 ] as const;
@@ -26,6 +27,7 @@ const categoryIconMap: Record<string, typeof Package> = {
   Hygiène: ShowerHead,
   'Matériel Médical': Stethoscope,
   'Hygiène Bucco-Dentaire': SmilePlus,
+  'Dermo-cosmétique': Hospital,
   'Naturel & Bio': Leaf,
   Promotions: Flame,
 };
@@ -149,7 +151,7 @@ export default function Index() {
             <h2 className="font-serif text-4xl font-semibold mb-3 text-foreground">{t('categories.title')}</h2>
             <div className="w-10 h-[2px] bg-primary mx-auto" />
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-4">
             {displayedCategories.map(cat => (
               <Link
                 key={cat.key}

@@ -11,6 +11,7 @@ const categories = [
   'Hygiène',
   'Matériel Médical',
   'Hygiène Bucco-Dentaire',
+  'Dermo-cosmétique',
   'Naturel & Bio',
   'Promotions',
 ];
