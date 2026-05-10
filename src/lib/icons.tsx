@@ -25,7 +25,6 @@ import {
   X as PhX,
   Plus as PhPlus,
   Minus as PhMinus,
-  Heart as PhHeart,
   Eye as PhEye,
   SlidersHorizontal as PhSliders,
   GridFour as PhGrid,
@@ -86,7 +85,6 @@ export const Menu = wrap(PhMenu);
 export const X = wrap(PhX);
 export const Plus = wrap(PhPlus);
 export const Minus = wrap(PhMinus);
-export const Heart = wrap(PhHeart);
 export const Eye = wrap(PhEye);
 export const SlidersHorizontal = wrap(PhSliders);
 export const Grid3X3 = wrap(PhGrid);

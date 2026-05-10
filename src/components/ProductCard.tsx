@@ -1,4 +1,4 @@
-import { Heart, ShoppingCart, Eye } from '@/lib/icons';
+import { ShoppingCart, Eye } from '@/lib/icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useCartStore } from '@/store/cartStore';
@@ -15,9 +15,6 @@ interface Props {
 export default function ProductCard({ product, onQuickView }: Props) {
   const { t } = useTranslation();
   const addItem = useCartStore(s => s.addItem);
-  const toggleWishlist = useCartStore(s => s.toggleWishlist);
-  const wishlist = useCartStore(s => s.wishlist);
-  const isWished = wishlist.includes(product.id);
 
   return (
     <div className="group relative bg-white rounded-lg border border-border/70 overflow-hidden transition-all duration-200 hover:-translate-y-[3px] hover:shadow-lift">
@@ -26,14 +23,6 @@ export default function ProductCard({ product, onQuickView }: Props) {
           {product.badge}
         </span>
       )}
-
-      <button
-        onClick={() => toggleWishlist(product.id)}
-        className="absolute top-3 right-3 z-10 h-8 w-8 rounded-full bg-white/80 backdrop-blur flex items-center justify-center transition-colors hover:bg-white"
-        aria-label={t('productDetail.addWishlist')}
-      >
-        <Heart className={`w-4 h-4 ${isWished ? 'fill-secondary text-secondary' : 'text-foreground'}`} strokeWidth={1.5} />
-      </button>
 
       <Link to={`/products/${product.id}`} className="block relative overflow-hidden bg-warm-card">
         <img

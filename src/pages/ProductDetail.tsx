@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Heart, Minus, Plus, Truck, ShieldCheck, RotateCcw, Star } from '@/lib/icons';
+import { Minus, Plus, Truck, ShieldCheck, RotateCcw, Star } from '@/lib/icons';
 import { useProduct, useProducts } from '@/hooks/useProducts';
 import { useCartStore } from '@/store/cartStore';
 import ProductCard from '@/components/ProductCard';
@@ -21,8 +21,6 @@ export default function ProductDetail() {
   const [qty, setQty] = useState(1);
   const addItem = useCartStore(s => s.addItem);
   const openOrderForm = useCartStore(s => s.openOrderForm);
-  const toggleWishlist = useCartStore(s => s.toggleWishlist);
-  const wishlist = useCartStore(s => s.wishlist);
 
   if (isLoading) {
     return <div className="min-h-screen pt-20 flex items-center justify-center text-muted-foreground">…</div>;
@@ -39,7 +37,6 @@ export default function ProductDetail() {
     );
   }
 
-  const isWished = wishlist.includes(product.id);
   const sameCategory = allProducts.filter(p => p.category === product.category && p.id !== product.id);
   const fallbackProducts = allProducts.filter(p => p.category !== product.category && p.id !== product.id);
   const related = [...sameCategory, ...fallbackProducts]
@@ -134,10 +131,6 @@ export default function ProductDetail() {
               </Button>
               <Button variant="secondary" onClick={handleBuyNow} disabled={!product.inStock} className="w-full rounded-full text-sm sm:text-base">
                 {t('productDetail.buyNow')}
-              </Button>
-              <Button variant="outline" onClick={() => toggleWishlist(product.id)} className="w-full rounded-full border-primary text-primary hover:bg-secondary text-sm sm:text-base gap-2">
-                <Heart className={`w-4 h-4 ${isWished ? 'fill-primary' : ''}`} />
-                {isWished ? t('productDetail.inWishlist') : t('productDetail.addWishlist')}
               </Button>
             </div>
 

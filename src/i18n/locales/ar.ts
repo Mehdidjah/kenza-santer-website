@@ -113,8 +113,6 @@ export const ar: Translations = {
     quantity: 'الكمية',
     addToCart: 'أضف إلى السلة',
     buyNow: 'اشترِ الآن',
-    inWishlist: 'في قائمة المفضلة',
-    addWishlist: 'أضف إلى المفضلة',
     freeShipping: 'توصيل مجاني',
     securePayment: 'دفع آمن',
     easyReturn: 'إرجاع سهل',

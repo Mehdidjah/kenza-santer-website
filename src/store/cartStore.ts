@@ -14,7 +14,6 @@ interface CartState {
   isSuccessOpen: boolean;
   orderName: string;
   orderPhone: string;
-  wishlist: string[];
   addItem: (product: Product, quantity?: number) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -27,7 +26,6 @@ interface CartState {
   closeOrderForm: () => void;
   openSuccess: (name: string, phone: string) => void;
   closeSuccess: () => void;
-  toggleWishlist: (productId: string) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -39,7 +37,6 @@ export const useCartStore = create<CartState>()(
       isSuccessOpen: false,
       orderName: '',
       orderPhone: '',
-      wishlist: [],
       addItem: (product, quantity = 1) => {
         const items = get().items;
         const existing = items.find(i => i.product.id === product.id);
@@ -67,14 +64,10 @@ export const useCartStore = create<CartState>()(
       closeOrderForm: () => set({ isOrderFormOpen: false }),
       openSuccess: (name, phone) => set({ isSuccessOpen: true, isOrderFormOpen: false, orderName: name, orderPhone: phone }),
       closeSuccess: () => set({ isSuccessOpen: false }),
-      toggleWishlist: (productId) => {
-        const wl = get().wishlist;
-        set({ wishlist: wl.includes(productId) ? wl.filter(id => id !== productId) : [...wl, productId] });
-      },
     }),
     {
       name: 'pharmaco-cart',
-      partialize: (state) => ({ items: state.items, wishlist: state.wishlist }),
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

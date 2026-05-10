@@ -111,8 +111,6 @@ export const fr = {
     quantity: 'Quantité',
     addToCart: 'Ajouter au Panier',
     buyNow: 'Acheter Maintenant',
-    inWishlist: 'Dans la Liste de Souhaits',
-    addWishlist: 'Ajouter aux Souhaits',
     freeShipping: 'Livraison gratuite',
     securePayment: 'Paiement sécurisé',
     easyReturn: 'Retour facile',
