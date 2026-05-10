@@ -57,7 +57,7 @@ export const fr = {
     items: [
       { name: 'Amina B.', wilaya: 'Alger', text: 'Livraison rapide et produits de qualité ! Je recommande Kenz Santé à 100%.' },
       { name: 'Karim M.', wilaya: 'Sétif', text: 'Excellent service client. Les compléments alimentaires sont au top, prix très compétitifs.' },
-      { name: 'Fatima Z.', wilaya: 'Sétif', text: 'Grande variété de produits naturels. L\'huile d\'argan est authentique et pure.' },
+      { name: 'Fatima Z.', wilaya: 'Sétif', text: 'Professional and excellent service. Thank you very much' },
     ],
   },
   newsletter: {
