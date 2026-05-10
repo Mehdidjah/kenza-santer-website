@@ -39,7 +39,11 @@ export default function ProductDetail() {
   }
 
   const isWished = wishlist.includes(product.id);
-  const related = allProducts.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
+  const sameCategory = allProducts.filter(p => p.category === product.category && p.id !== product.id);
+  const fallbackProducts = allProducts.filter(p => p.category !== product.category && p.id !== product.id);
+  const related = [...sameCategory, ...fallbackProducts]
+    .filter((p, index, products) => products.findIndex(item => item.id === p.id) === index)
+    .slice(0, 4);
 
   const handleBuyNow = () => {
     const updateQuantity = useCartStore.getState().updateQuantity;
