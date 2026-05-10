@@ -151,20 +151,20 @@ export default function Index() {
             <h2 className="font-serif text-4xl font-semibold mb-3 text-foreground">{t('categories.title')}</h2>
             <div className="w-10 h-[2px] bg-primary mx-auto" />
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 lg:gap-3 xl:gap-4">
             {displayedCategories.map(cat => (
               <Link
                 key={cat.key}
                 to={`/products?category=${encodeURIComponent(cat.key)}`}
-                className={`group relative bg-white rounded-xl border p-7 flex flex-col items-center justify-center gap-4 transition-all duration-200 hover:bg-[hsl(var(--warm-card))] ${'special' in cat && cat.special ? 'border-secondary/40 hover:border-secondary' : 'border-border hover:border-primary/40'}`}
+                className={`group relative min-h-[150px] xl:min-h-[186px] bg-white rounded-xl border p-5 xl:p-7 flex flex-col items-center justify-center gap-3 xl:gap-4 transition-all duration-200 hover:bg-[hsl(var(--warm-card))] ${'special' in cat && cat.special ? 'border-secondary/40 hover:border-secondary' : 'border-border hover:border-primary/40'}`}
               >
                 {'special' in cat && cat.special && (
                   <span className="absolute top-2 right-2 text-[10px] font-medium uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded">
                   {t('categories.offers')}
                   </span>
                 )}
-                <cat.icon className={`w-10 h-10 ${'special' in cat && cat.special ? 'text-secondary' : 'text-primary'}`} strokeWidth={1.5} />
-                <h3 className="text-[12px] uppercase tracking-[0.06em] font-medium text-center text-foreground leading-tight">
+                <cat.icon className={`w-9 h-9 xl:w-10 xl:h-10 ${'special' in cat && cat.special ? 'text-secondary' : 'text-primary'}`} strokeWidth={1.5} />
+                <h3 className="text-[11px] xl:text-[12px] uppercase tracking-[0.06em] font-medium text-center text-foreground leading-tight">
                   {categoryLabel(cat.key)}
                 </h3>
               </Link>
