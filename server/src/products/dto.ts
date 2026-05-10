@@ -80,3 +80,8 @@ export class PresignProductImageDto {
   @IsString()
   contentType!: string;
 }
+
+export class UploadProductImageDto extends PresignProductImageDto {
+  @IsString()
+  base64!: string;
+}

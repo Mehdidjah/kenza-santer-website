@@ -44,6 +44,19 @@ const empty: EditingProduct = {
   price: 0, original_price: null, badge: null, in_stock: true, rating: 4.5, review_count: 0,
   images: [], imageKeys: [], ingredients: [], how_to_use: [], precautions: [],
 };
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
+
+function fileToBase64(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result ?? '');
+      resolve(result.includes(',') ? result.split(',').pop() ?? '' : result);
+    };
+    reader.onerror = () => reject(new Error('Lecture du fichier impossible'));
+    reader.readAsDataURL(file);
+  });
+}
 
 function MultilineList({ label, value, onChange, placeholder }: { label: string; value: string[]; onChange: (v: string[]) => void; placeholder?: string }) {
   return (
@@ -79,21 +92,25 @@ export default function ProductEditor({ open, onClose, initial, onSaved }: Props
     const keys: string[] = [];
     for (const file of Array.from(files)) {
       try {
-        const upload = await api.createProductImageUpload(file.name, file.type || 'application/octet-stream');
-        const response = await fetch(upload.uploadUrl, {
-          method: 'PUT',
-          headers: { 'Content-Type': file.type || 'application/octet-stream' },
-          body: file,
-        });
-        if (!response.ok) throw new Error(`Upload échoué (${response.status})`);
+        if (file.size > MAX_IMAGE_SIZE) throw new Error('Image trop grande (8 MB max)');
+        const base64 = await fileToBase64(file);
+        const upload = await api.uploadProductImage(file.name, file.type || 'image/jpeg', base64);
         urls.push(upload.previewUrl);
         keys.push(upload.objectKey);
       } catch (error) {
         toast({ title: 'Upload échoué', description: error instanceof Error ? error.message : 'Erreur inconnue', variant: 'destructive' });
       }
     }
-    const existingImages = p.imageKeys.length ? p.images : [];
-    setP({ ...p, images: [...existingImages, ...urls].slice(0, 4), imageKeys: [...p.imageKeys, ...keys].slice(0, 4) });
+    if (keys.length) {
+      setP(current => {
+        const existingImages = current.imageKeys.length ? current.images : [];
+        return {
+          ...current,
+          images: [...existingImages, ...urls].slice(0, 4),
+          imageKeys: [...current.imageKeys, ...keys].slice(0, 4),
+        };
+      });
+    }
     setUploading(false);
   };
 
@@ -154,27 +171,32 @@ export default function ProductEditor({ open, onClose, initial, onSaved }: Props
           </div>
 
           <div className="space-y-2">
-            <Label>Images ({realImages.length}/4)</Label>
+            <div className="flex items-center justify-between gap-3">
+              <Label>Images produit ({realImages.length}/4)</Label>
+              {realImages.length === 0 && (
+                <span className="text-xs text-muted-foreground">Ajoutez une photo pour remplacer l'image par défaut</span>
+              )}
+            </div>
             <div className="grid grid-cols-4 gap-3">
               {realImages.length === 0 && (
                 <div className="relative aspect-square rounded-md overflow-hidden border border-dashed border-border bg-muted">
                   <img src={DEFAULT_PRODUCT_IMAGE} alt="" className="w-full h-full object-cover opacity-80" />
                   <span className="absolute inset-x-1 bottom-1 rounded bg-background/85 px-1 py-0.5 text-center text-[10px] text-muted-foreground">
-                    Image par défaut
+                    Image par défaut non enregistrée
                   </span>
                 </div>
               )}
               {realImages.map((url, i) => (
                 <div key={i} className="relative aspect-square rounded-md overflow-hidden border border-border">
                   <img src={url} alt="" className="w-full h-full object-cover" />
-                  <button type="button" onClick={() => removeImage(i)} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1"><X className="w-3 h-3" /></button>
+                  <button type="button" aria-label="Supprimer cette image" onClick={() => removeImage(i)} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1"><X className="w-3 h-3" /></button>
                 </div>
               ))}
               {realImages.length < 4 && (
                 <label className="aspect-square border-2 border-dashed border-border rounded-md flex flex-col items-center justify-center text-muted-foreground cursor-pointer hover:bg-warm-card text-xs">
                   <UploadCloud className="w-6 h-6 mb-1" />
-                  {uploading ? 'Envoi…' : 'Ajouter'}
-                  <input type="file" accept="image/*" multiple className="hidden" onChange={e => upload(e.target.files)} />
+                  {uploading ? 'Envoi…' : realImages.length === 0 ? 'Remplacer' : 'Ajouter'}
+                  <input type="file" accept="image/*" multiple className="hidden" onChange={e => { upload(e.target.files); e.currentTarget.value = ''; }} />
                 </label>
               )}
             </div>

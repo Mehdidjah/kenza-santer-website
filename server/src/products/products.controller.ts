@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { AdminGuard } from '../auth/admin.guard';
-import { PresignProductImageDto, SaveProductDto } from './dto';
+import { PresignProductImageDto, SaveProductDto, UploadProductImageDto } from './dto';
 import { ProductsService } from './products.service';
 
 @Controller()
@@ -51,5 +51,11 @@ export class ProductsController {
   @UseGuards(AdminGuard)
   createProductImageUpload(@Body() dto: PresignProductImageDto) {
     return this.products.createUploadIntent(dto.fileName, dto.contentType);
+  }
+
+  @Post('admin/uploads/product-image/file')
+  @UseGuards(AdminGuard)
+  uploadProductImage(@Body() dto: UploadProductImageDto) {
+    return this.products.uploadProductImage(dto.fileName, dto.contentType, dto.base64);
   }
 }

@@ -221,6 +221,10 @@ export const api = {
     '/admin/uploads/product-image',
     { method: 'POST', json: { fileName, contentType } },
   ),
+  uploadProductImage: (fileName: string, contentType: string, base64: string) => request<{ objectKey: string; previewUrl: string }>(
+    '/admin/uploads/product-image/file',
+    { method: 'POST', json: { fileName, contentType, base64 } },
+  ),
 
   createCategory: (payload: { name: string; sort_order: number }) => request<ApiCategoryRow>('/admin/categories', { method: 'POST', json: payload }),
   updateCategory: (id: string, payload: { name: string; sort_order: number }) => request<ApiCategoryRow>(`/admin/categories/${id}`, { method: 'PUT', json: payload }),

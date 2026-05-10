@@ -62,6 +62,22 @@ export class ProductsService {
     return { objectKey, uploadUrl, previewUrl };
   }
 
+  async uploadProductImage(fileName: string, contentType: string, base64: string) {
+    if (!contentType.startsWith('image/')) {
+      throw new BadRequestException('Only image uploads are allowed');
+    }
+
+    const cleanBase64 = base64.includes(',') ? base64.split(',').pop() ?? '' : base64;
+    const body = Buffer.from(cleanBase64, 'base64');
+    if (!body.length) throw new BadRequestException('Image file is empty');
+    if (body.byteLength > 8 * 1024 * 1024) throw new BadRequestException('Image must be 8 MB or smaller');
+
+    const objectKey = this.storage.createProductImageKey(fileName);
+    await this.storage.uploadObject(objectKey, contentType, body);
+    const previewUrl = await this.storage.getDisplayUrl(objectKey);
+    return { objectKey, previewUrl };
+  }
+
   private async save(id: string | null, dto: SaveProductDto) {
     const category = await this.prisma.category.findUnique({ where: { name: dto.category } });
     if (!category) throw new BadRequestException('Category does not exist');

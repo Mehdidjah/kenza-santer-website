@@ -60,6 +60,21 @@ export class StorageService {
     );
   }
 
+  async uploadObject(objectKey: string, contentType: string, body: Buffer) {
+    if (!this.client || !this.bucket) {
+      throw new ServiceUnavailableException('Railway bucket credentials are not configured');
+    }
+
+    await this.client.send(
+      new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: objectKey,
+        ContentType: contentType,
+        Body: body,
+      }),
+    );
+  }
+
   async getDisplayUrl(objectKey: string) {
     if (!objectKey) return DEFAULT_PRODUCT_IMAGE;
     if (objectKey.startsWith('http://') || objectKey.startsWith('https://') || objectKey.startsWith('/')) {
