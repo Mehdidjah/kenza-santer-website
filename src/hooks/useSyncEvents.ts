@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useQueryClient, type QueryClient } from '@tanstack/react-query';
-import { adminEventsUrl, publicEventsUrl } from '@/lib/api';
+import { getAdminEventsUrl, publicEventsUrl } from '@/lib/api';
 
 function invalidateCatalog(qc: QueryClient) {
   qc.invalidateQueries({ queryKey: ['products'] });
@@ -33,7 +33,7 @@ export function useAdminSync(enabled = true) {
   useEffect(() => {
     if (!enabled || !canUseEventSource()) return;
 
-    const source = new EventSource(adminEventsUrl, { withCredentials: true });
+    const source = new EventSource(getAdminEventsUrl(), { withCredentials: true });
     const refreshCatalog = () => {
       invalidateCatalog(qc);
       qc.invalidateQueries({ queryKey: ['admin-products'] });

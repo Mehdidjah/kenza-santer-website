@@ -12,6 +12,11 @@ const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/',
 };
+const clearCookieOptions = {
+  path: '/',
+  sameSite,
+  secure: cookieOptions.secure,
+};
 
 @Controller('auth')
 export class AuthController {
@@ -21,12 +26,12 @@ export class AuthController {
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
     const result = await this.auth.login(dto.email, dto.password);
     res.cookie('admin_token', result.token, cookieOptions);
-    return { user: result.user };
+    return { user: result.user, token: result.token };
   }
 
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('admin_token', { path: '/' });
+    res.clearCookie('admin_token', clearCookieOptions);
     return { ok: true };
   }
 

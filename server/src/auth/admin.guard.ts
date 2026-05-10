@@ -22,7 +22,8 @@ export class AdminGuard implements CanActivate {
     const bearer = req.headers.authorization?.startsWith('Bearer ')
       ? req.headers.authorization.slice('Bearer '.length)
       : undefined;
-    const token = req.cookies.admin_token ?? bearer;
+    const queryToken = typeof req.query.admin_token === 'string' ? req.query.admin_token : undefined;
+    const token = req.cookies.admin_token ?? bearer ?? queryToken;
 
     if (!token) throw new UnauthorizedException('Admin session required');
 

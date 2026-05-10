@@ -4,6 +4,30 @@ import { resolveProductImage } from '@/lib/images';
 export const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/$/, '');
 export const publicEventsUrl = `${API_URL}/events`;
 export const adminEventsUrl = `${API_URL}/admin/events`;
+const ADMIN_TOKEN_KEY = 'kenz_admin_token';
+
+export function getAdminToken() {
+  if (typeof window === 'undefined') return null;
+  return window.localStorage.getItem(ADMIN_TOKEN_KEY);
+}
+
+function setAdminToken(token: string | null) {
+  if (typeof window === 'undefined') return;
+  if (token) {
+    window.localStorage.setItem(ADMIN_TOKEN_KEY, token);
+  } else {
+    window.localStorage.removeItem(ADMIN_TOKEN_KEY);
+  }
+}
+
+export function getAdminEventsUrl() {
+  const token = getAdminToken();
+  if (!token) return adminEventsUrl;
+
+  const url = new URL(adminEventsUrl);
+  url.searchParams.set('admin_token', token);
+  return url.toString();
+}
 
 export type ApiProductRow = {
   id: string;
@@ -68,6 +92,11 @@ export type AdminUser = {
   email: string;
 };
 
+export type LoginResponse = {
+  user: AdminUser;
+  token?: string;
+};
+
 export type ApiSystemStatus = {
   ok: boolean;
   database: {
@@ -91,11 +120,13 @@ type RequestOptions = RequestInit & {
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { json, headers, ...init } = options;
+  const adminToken = getAdminToken();
   const response = await fetch(`${API_URL}${path}`, {
     credentials: 'include',
     ...init,
     headers: {
       ...(json !== undefined ? { 'Content-Type': 'application/json' } : {}),
+      ...(adminToken ? { Authorization: `Bearer ${adminToken}` } : {}),
       ...headers,
     },
     body: json !== undefined ? JSON.stringify(json) : init.body,
@@ -105,6 +136,9 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   const data = text ? JSON.parse(text) : null;
 
   if (!response.ok) {
+    if (response.status === 401 && (path === '/auth/me' || path.startsWith('/admin/'))) {
+      setAdminToken(null);
+    }
     const message = typeof data?.message === 'string'
       ? data.message
       : Array.isArray(data?.message)
@@ -165,8 +199,18 @@ export const api = {
     items: Array<{ productId: string; quantity: number }>;
   }) => request<{ id: string; total: number }>('/orders', { method: 'POST', json: payload }),
 
-  login: (email: string, password: string) => request<{ user: AdminUser }>('/auth/login', { method: 'POST', json: { email, password } }),
-  logout: () => request<{ ok: true }>('/auth/logout', { method: 'POST' }),
+  login: async (email: string, password: string) => {
+    const result = await request<LoginResponse>('/auth/login', { method: 'POST', json: { email, password } });
+    setAdminToken(result.token ?? null);
+    return result;
+  },
+  logout: async () => {
+    try {
+      return await request<{ ok: true }>('/auth/logout', { method: 'POST' });
+    } finally {
+      setAdminToken(null);
+    }
+  },
   me: () => request<{ user: AdminUser }>('/auth/me'),
 
   adminProducts: () => request<ApiProductRow[]>('/admin/products'),
