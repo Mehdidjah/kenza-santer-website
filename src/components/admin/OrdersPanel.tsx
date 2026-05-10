@@ -27,6 +27,26 @@ const STATUS_COLOR: Record<OrderStatus, string> = {
   cancelled: 'bg-red-100 text-red-800',
 };
 
+const ORDER_TIME_ZONE = 'Africa/Algiers';
+const orderDateFormatter = new Intl.DateTimeFormat('fr-FR', {
+  dateStyle: 'medium',
+  timeZone: ORDER_TIME_ZONE,
+});
+const orderTimeFormatter = new Intl.DateTimeFormat('fr-FR', {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+  timeZone: ORDER_TIME_ZONE,
+});
+
+function formatOrderDate(value: string) {
+  return orderDateFormatter.format(new Date(value));
+}
+
+function formatOrderTime(value: string) {
+  return orderTimeFormatter.format(new Date(value));
+}
+
 export default function OrdersPanel() {
   const qc = useQueryClient();
   const [search, setSearch] = useState('');
@@ -87,7 +107,15 @@ export default function OrdersPanel() {
     if (filter !== 'all' && o.status !== filter) return false;
     if (!search) return true;
     const s = search.toLowerCase();
-    return [o.first_name, o.last_name, o.phone, o.email, o.wilaya].some(v => v?.toLowerCase().includes(s));
+    return [
+      o.first_name,
+      o.last_name,
+      o.phone,
+      o.email,
+      o.wilaya,
+      formatOrderDate(o.created_at),
+      formatOrderTime(o.created_at),
+    ].some(v => v?.toLowerCase().includes(s));
   }), [orders, filter, search]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -114,6 +142,7 @@ export default function OrdersPanel() {
           <TableHeader>
             <TableRow>
               <TableHead>Date</TableHead>
+              <TableHead>Heure</TableHead>
               <TableHead>Client</TableHead>
               <TableHead>Téléphone</TableHead>
               <TableHead>Wilaya</TableHead>
@@ -124,12 +153,13 @@ export default function OrdersPanel() {
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">Chargement…</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">Chargement…</TableCell></TableRow>
             ) : filtered.length === 0 ? (
-              <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">Aucune commande</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">Aucune commande</TableCell></TableRow>
             ) : paged.map(o => (
               <TableRow key={o.id}>
-                <TableCell className="whitespace-nowrap text-sm">{new Date(o.created_at).toLocaleString('fr-FR')}</TableCell>
+                <TableCell className="whitespace-nowrap text-sm font-medium">{formatOrderDate(o.created_at)}</TableCell>
+                <TableCell className="whitespace-nowrap text-sm">{formatOrderTime(o.created_at)}</TableCell>
                 <TableCell className="font-medium">{o.first_name} {o.last_name}</TableCell>
                 <TableCell>{o.phone}</TableCell>
                 <TableCell>{o.wilaya}</TableCell>
@@ -176,7 +206,8 @@ export default function OrdersPanel() {
             <div className="space-y-5 text-sm">
               <div className="grid grid-cols-2 gap-4">
                 <div><div className="text-muted-foreground">Nom</div><div className="font-medium">{selected.first_name} {selected.last_name}</div></div>
-                <div><div className="text-muted-foreground">Date</div><div className="font-medium">{new Date(selected.created_at).toLocaleString('fr-FR')}</div></div>
+                <div><div className="text-muted-foreground">Date de commande</div><div className="font-medium">{formatOrderDate(selected.created_at)}</div></div>
+                <div><div className="text-muted-foreground">Heure de commande</div><div className="font-medium">{formatOrderTime(selected.created_at)}</div></div>
                 <div><div className="text-muted-foreground">Téléphone</div><div className="font-medium">{selected.phone}</div></div>
                 <div><div className="text-muted-foreground">Email</div><div className="font-medium break-all">{selected.email}</div></div>
                 <div><div className="text-muted-foreground">Wilaya</div><div className="font-medium">{selected.wilaya}</div></div>
