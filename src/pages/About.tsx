@@ -6,7 +6,7 @@ export default function About() {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen pt-20 bg-background">
+    <div className="min-h-screen pt-[84px] bg-background">
       <div className="container mx-auto px-6 py-12">
         <div className="flex items-center gap-1.5 text-[12px] uppercase tracking-wider text-muted-foreground mb-8">
           <Link to="/" className="hover:text-tertiary transition-colors">{t('nav.home')}</Link>

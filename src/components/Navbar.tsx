@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import logo from '@/assets/logo.svg';
+import logo from '@/assets/Logo-com (1).svg';
 
 export default function Navbar() {
   const { t } = useTranslation();
@@ -63,9 +63,9 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-white border-b border-border ${scrolled ? 'shadow-nav backdrop-blur' : ''}`}>
-      <div className="container mx-auto flex items-center justify-between h-16 px-6">
+      <div className="container mx-auto flex items-center justify-between h-[84px] px-6">
         <Link to="/" className="flex items-center gap-1.5">
-          <img src={logo} alt="Kenz Santé" className="h-9 w-auto" />
+          <img src={logo} alt="Kenz Santé" className="h-[56px] w-auto" />
         </Link>
 
         <div className="hidden md:flex items-center gap-10">

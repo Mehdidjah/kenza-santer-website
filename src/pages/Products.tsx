@@ -147,7 +147,7 @@ export default function Products() {
   );
 
   return (
-    <div className="min-h-screen pt-20 bg-background">
+    <div className="min-h-screen pt-[84px] bg-background">
       <div className="container mx-auto px-6 py-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 text-[12px] uppercase tracking-wider text-muted-foreground mb-8">

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Facebook, Instagram } from '@/lib/icons';
-import logo from '@/assets/logo.svg';
+import logo from '@/assets/Logo-com (1).svg';
 import { useCategories } from '@/hooks/useProducts';
 
 const fallbackCategoryKeys = ['Bébé & Maman', 'Compléments Alimentaires', 'Hygiène', 'Matériel Médical', 'Hygiène Bucco-Dentaire', 'Dermo-cosmétique'];
@@ -19,7 +19,7 @@ export default function Footer() {
     <footer className="bg-foreground text-warm-card">
       <div className="container mx-auto px-6 py-20">
         <div className="flex items-center gap-2 mb-10">
-          <img src={logo} alt="Kenz Santé" className="h-7 w-auto brightness-0 invert" />
+          <img src={logo} alt="Kenz Santé" className="h-[48px] w-auto brightness-0 invert" />
         </div>
         <p className="text-warm-card/60 text-sm mb-14 max-w-md leading-[1.75]">
           {t('footer.tagline')}

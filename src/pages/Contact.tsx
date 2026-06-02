@@ -30,7 +30,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-24 pb-20">
+    <div className="min-h-screen bg-background pt-[84px] pb-20">
       <div className="container mx-auto px-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-10">

@@ -23,12 +23,12 @@ export default function ProductDetail() {
   const openOrderForm = useCartStore(s => s.openOrderForm);
 
   if (isLoading) {
-    return <div className="min-h-screen pt-20 flex items-center justify-center text-muted-foreground">…</div>;
+    return <div className="min-h-screen pt-[84px] flex items-center justify-center text-muted-foreground">…</div>;
   }
 
   if (!product) {
     return (
-      <div className="min-h-screen pt-20 flex items-center justify-center">
+      <div className="min-h-screen pt-[84px] flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-2">{t('productDetail.notFound')}</h1>
           <Button variant="link" asChild><Link to="/products">{t('productDetail.back')}</Link></Button>
@@ -60,7 +60,7 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-[84px]">
       <div className="container mx-auto px-4 lg:px-8 py-6 sm:py-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6 sm:mb-8 overflow-x-auto">

@@ -79,7 +79,7 @@ export default function Index() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative pt-16 bg-background overflow-hidden">
+      <section className="relative pt-[84px] bg-background overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.04] pointer-events-none"
           style={{ backgroundImage: `url("${botanicalSvg}")`, backgroundSize: '240px 240px' }}
