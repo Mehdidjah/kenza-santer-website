@@ -37,6 +37,7 @@ import {
   MapPin as PhMapPin,
   FacebookLogo as PhFacebook,
   InstagramLogo as PhInstagram,
+  WhatsappLogo as PhWhatsapp,
   PencilSimple as PhPencil,
   Trash as PhTrash,
   UploadSimple as PhUpload,
@@ -97,6 +98,7 @@ export const Phone = wrap(PhPhone);
 export const MapPin = wrap(PhMapPin);
 export const Facebook = wrap(PhFacebook);
 export const Instagram = wrap(PhInstagram);
+export const Whatsapp = wrap(PhWhatsapp);
 export const Pencil = wrap(PhPencil);
 export const Trash2 = wrap(PhTrash);
 export const UploadCloud = wrap(PhUpload);

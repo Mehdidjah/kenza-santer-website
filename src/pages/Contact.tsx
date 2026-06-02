@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, ChevronRight, Facebook, Instagram } from '@/lib/icons';
+import { Phone, Mail, MapPin, ChevronRight, Facebook, Instagram, Whatsapp } from '@/lib/icons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,6 +12,7 @@ const PHONE_DISPLAY = '+213 770 03 18 37';
 const EMAIL = 'kenz.sante@gmail.com';
 const FACEBOOK_URL = 'https://www.facebook.com/share/1GTpys8ZPn/';
 const INSTAGRAM_URL = 'https://www.instagram.com/kenz.sante?utm_source=qr&igsh=MTB6c3BkbW5vb2drYw==';
+const WHATSAPP_URL = 'https://wa.me/213770031837';
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -117,6 +118,15 @@ export default function Contact() {
                   className="w-11 h-11 rounded-full bg-white border border-border flex items-center justify-center hover:border-primary transition-colors"
                 >
                   <Instagram className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                </a>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="w-11 h-11 rounded-full bg-white border border-border flex items-center justify-center hover:border-primary transition-colors"
+                >
+                  <Whatsapp className="w-5 h-5 text-primary" strokeWidth={1.5} />
                 </a>
               </div>
             </div>
