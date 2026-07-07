@@ -10,6 +10,9 @@ import { NumberTicker } from '@/components/ui/number-ticker';
 import type { Product } from '@/types/product';
 import { DEFAULT_PRODUCT_IMAGE } from '@/lib/images';
 
+const HERO_PRODUCT_FALLBACK_IMAGE = '/picture/moderm-ecran-total-50-fps.webp';
+const HERO_PRODUCT_NAME_MATCHES = ['creme ecran total 50 fps', 'ecran total 50 fps'];
+
 const categoryItems = [
   { key: 'Bébé & Maman', icon: Baby },
   { key: 'Compléments Alimentaires', icon: Pill },
@@ -34,11 +37,26 @@ const categoryIconMap: Record<string, typeof Package> = {
 
 const botanicalSvg = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><g fill='none' stroke='%23B8C820' stroke-width='1.2' stroke-linecap='round'><path d='M40 180 Q 60 120 80 80 Q 100 40 60 30'/><path d='M60 100 Q 80 90 100 100'/><path d='M55 130 Q 75 120 95 130'/><path d='M180 60 Q 160 100 140 140 Q 120 180 160 200'/><path d='M170 100 Q 150 110 130 100'/><path d='M165 140 Q 145 150 125 140'/></g></svg>`;
 
+function normalizeProductName(value: string) {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
 export default function Index() {
   const { t } = useTranslation();
   const [quickView, setQuickView] = useState<Product | null>(null);
   const { data: products = [] } = useProducts();
   const { data: categories = [] } = useCategories();
+  const heroProduct = products.find(product => {
+    const normalizedName = normalizeProductName(product.name);
+    return HERO_PRODUCT_NAME_MATCHES.some(match => normalizedName.includes(match));
+  });
+  const heroProductImage = heroProduct?.image && heroProduct.image !== DEFAULT_PRODUCT_IMAGE
+    ? heroProduct.image
+    : HERO_PRODUCT_FALLBACK_IMAGE;
+  const heroProductAlt = heroProduct?.name ?? 'Crème ECRAN TOTAL 50 FPS';
   const displayedCategories = categories.length
     ? categories.map(category => ({
         key: category.name,
@@ -142,7 +160,13 @@ export default function Index() {
 
             <div className="hidden lg:block relative animate-fade-in [animation-delay:200ms]">
               <div className="relative overflow-hidden rounded-lg bg-warm-card">
-                <img src={DEFAULT_PRODUCT_IMAGE} alt="Produits pharmaceutiques premium" className="w-full" width={1024} height={864} />
+                <img
+                  src={heroProductImage}
+                  alt={heroProductAlt}
+                  className="w-full"
+                  width={1290}
+                  height={1218}
+                />
               </div>
 
               <div className="absolute -bottom-3 -left-3 bg-white rounded-md px-5 py-3.5 flex items-center gap-3 border border-border animate-fade-in [animation-delay:600ms]">
